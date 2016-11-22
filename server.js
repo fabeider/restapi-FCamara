@@ -41,22 +41,13 @@ function handleError(res, reason, message, code) {
  */
 
 app.get("/products", function(req, res) {
+  db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get products.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
 });
 
-app.post("/products", function(req, res) {
-});
 
-/*  "/products/:id"
- *    GET: find product by id
- *    PUT: update product by id
- *    DELETE: deletes product by id
- */
-
-app.get("/products/:id", function(req, res) {
-});
-
-app.put("/products/:id", function(req, res) {
-});
-
-app.delete("/products/:id", function(req, res) {
-});
