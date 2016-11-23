@@ -60,7 +60,6 @@ function handleError(res, reason, message, code) {
 }
 
 apiRoutes.post("/auth", function(req, res) {
-  console.log(req.body);
   if (!req.body.name) {
     handleError(res, "Invalid user input", "Must provide a name.", 400);
   }
@@ -127,12 +126,10 @@ apiRoutes.post("/auth", function(req, res) {
  */
 
  apiRoutes.get("/products", function(req, res) {
-  console.log("GET");
   db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get products.");
     } else {
-      console.log(docs);
       res.status(200).json(docs);
     }
   });
