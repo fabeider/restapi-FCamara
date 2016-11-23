@@ -2,9 +2,11 @@ var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
+var jwt    = require("jsonwebtoken"); // used to create, sign, and verify tokens
 var ObjectID = mongodb.ObjectID;
 
 var PRODUCTS_COLLECTION = "products";
+var USERS_COLLECTION = "users";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -58,15 +60,53 @@ function handleError(res, reason, message, code) {
  *    POST: creates a new product
  */
 
-app.get("/products", function(req, res) {
+ app.get("/products", function(req, res) {
   console.log("GET");
   db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get products.");
     } else {
+      console.log(docs);
       res.status(200).json(docs);
     }
   });
 });
+
+ app.post("/auth", function(req, res) {
+  if (!req.body.name) {
+    handleError(res, "Invalid user input", "Must provide a name.", 400);
+  }
+
+  db.collection(USERS_COLLECTION).findOne({ name: req.body.name }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contact");
+    } else {
+      if (!doc) {
+        res.json({ success: false, message: 'Authentication failed. User not found.' });
+      } else if (doc) {
+      
+      // check if password matches
+      if (doc.password != req.body.password) {
+        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+      } else {
+        // if user is found and password is right
+        // create a token
+        var token = jwt.sign(doc, "secret", {
+          expiresIn: '1m' // expires in 1 minute
+        });
+
+        // return the information including token as JSON
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      }   
+
+    }
+  }
+});
+});
+
 
 
