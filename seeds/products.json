@@ -1,8 +1,8 @@
 [
-  { id: 1, name: "Widget 1", price: "1.00" },
-  { id: 3, name: "Widget 3", price: "2.00" },
-  { id: 4, name: "Widget 4", price: "3.00" },
-  { id: 5, name: "Widget 5", price: "4.00" },
-  { id: 6, name: "Widget 6", price: "5.00" },
-  { id: 7, name: "Widget 7", price: "6.00" }
+  { id: 1, name: "Product 1", price: "1.00" },
+  { id: 3, name: "Product 3", price: "2.00" },
+  { id: 4, name: "Product 4", price: "3.00" },
+  { id: 5, name: "Product 5", price: "4.00" },
+  { id: 6, name: "Product 6", price: "5.00" },
+  { id: 7, name: "Product 7", price: "6.00" }
 ]
