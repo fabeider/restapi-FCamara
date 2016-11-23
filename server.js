@@ -56,24 +56,7 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-/*  "/products"
- *    GET: finds all products
- *    POST: creates a new product
- */
-
- apiRoutes.get("/products", function(req, res) {
-  console.log("GET");
-  db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
-    if (err) {
-      handleError(res, err.message, "Failed to get products.");
-    } else {
-      console.log(docs);
-      res.status(200).json(docs);
-    }
-  });
-});
-
- apiRoutes.post("/auth", function(req, res) {
+apiRoutes.post("/auth", function(req, res) {
   if (!req.body.name) {
     handleError(res, "Invalid user input", "Must provide a name.", 400);
   }
@@ -85,7 +68,7 @@ function handleError(res, reason, message, code) {
       if (!doc) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
       } else if (doc) {
-      
+
       // check if password matches
       if (doc.password != req.body.password) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
@@ -106,6 +89,49 @@ function handleError(res, reason, message, code) {
     }
   }
 });
+});
+
+ // route middleware to verify a token
+ apiRoutes.use(function(req, res, next) {
+
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  if (token) {
+
+    jwt.verify(token, "secret", function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        req.decoded = decoded;    
+        next();
+      }
+    });
+
+  } else {
+    return res.status(403).send({ 
+      success: false, 
+      message: 'No token provided.' 
+    });
+    
+  }
+});
+
+ /*  "/products"
+ *    GET: finds all products
+ *    POST: creates a new product
+ */
+
+ apiRoutes.get("/products", function(req, res) {
+  console.log("GET");
+  db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get products.");
+    } else {
+      console.log(docs);
+      res.status(200).json(docs);
+    }
+  });
 });
 
  app.use('/api', apiRoutes);
