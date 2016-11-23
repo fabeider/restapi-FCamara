@@ -1,11 +1,11 @@
 # restapi-FCamara
-This is a Restful API, made using NodeJS and MongoDB.
+This is a Restful API, made using NodeJS and MongoDB.<br>
 It has two endpoints, to authenticate the user (with JWT) and to retrieve a simple list of products.
 
 # Pre reqs
-  npm installed<br>
-  MongoDB installed and running<br>
-  NodeJS installed
+  - npm installed
+  - MongoDB installed and running
+  - NodeJS installed
 
 #To install
   npm install
