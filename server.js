@@ -8,6 +8,7 @@ var ObjectID = mongodb.ObjectID;
 var PRODUCTS_COLLECTION = "products";
 var USERS_COLLECTION = "users";
 
+var cors = require('cors')
 var app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
@@ -16,15 +17,17 @@ app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization');
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
   // Pass to next layer of middleware
   next();
 });
+
+app.use(cors());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
@@ -57,6 +60,7 @@ function handleError(res, reason, message, code) {
 }
 
 apiRoutes.post("/auth", function(req, res) {
+  console.log(req.body);
   if (!req.body.name) {
     handleError(res, "Invalid user input", "Must provide a name.", 400);
   }
