@@ -48,6 +48,7 @@ mongodb.MongoClient.connect('mongodb://localhost/test', function (err, database)
 });
 
 // PRODUCTS API ROUTES BELOW
+var apiRoutes = express.Router(); 
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -60,7 +61,7 @@ function handleError(res, reason, message, code) {
  *    POST: creates a new product
  */
 
- app.get("/products", function(req, res) {
+ apiRoutes.get("/products", function(req, res) {
   console.log("GET");
   db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
@@ -72,7 +73,7 @@ function handleError(res, reason, message, code) {
   });
 });
 
- app.post("/auth", function(req, res) {
+ apiRoutes.post("/auth", function(req, res) {
   if (!req.body.name) {
     handleError(res, "Invalid user input", "Must provide a name.", 400);
   }
@@ -102,11 +103,14 @@ function handleError(res, reason, message, code) {
           token: token
         });
       }   
-
     }
   }
 });
 });
+
+ app.use('/api', apiRoutes);
+
+
 
 
 
