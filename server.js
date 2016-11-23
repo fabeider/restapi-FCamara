@@ -105,7 +105,7 @@ apiRoutes.post("/auth", function(req, res) {
 
     jwt.verify(token, "secret", function(err, decoded) {      
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        return res.status(401).send({ success: false, message: 'Failed to authenticate token.' });    
       } else {
         req.decoded = decoded;    
         next();
