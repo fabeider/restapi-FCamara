@@ -9,6 +9,20 @@ var PRODUCTS_COLLECTION = "products";
 var app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
+// Add headers
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Pass to next layer of middleware
+  next();
+});
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
@@ -45,6 +59,7 @@ function handleError(res, reason, message, code) {
  */
 
 app.get("/products", function(req, res) {
+  console.log("GET");
   db.collection(PRODUCTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get products.");
