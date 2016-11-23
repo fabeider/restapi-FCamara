@@ -1,15 +1,16 @@
 {
-"name": "RestApi",
-"version": "1.0.0",
-"description": "A Restful api to get a list os products",
-"main": "server.js",
-"scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "start": "node server.js"
-},
-"dependencies": {
-  "body-parser": "^1.13.3",
-  "express": "^4.13.3",
-  "mongoose": "~3.6.13"
-}
+  "name": "RestApi",
+  "version": "1.0.0",
+  "description": "A Restful api to get a list os products",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongodb": "^2.1.6",
+    "morgan": "~1.0.0"
+  }
 }
